@@ -3,9 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <script type="module" src="./js/index.js"></script>
+  <title>Car Table</title>
 </head>
 <body>
-  <h1> Hello World! </h1>
+  <header>
+    <h1>Car Project!</h1>
+    <a href="/login.html">Login</a>
+  </header>
+  <main>
+    <table id="carTable"></table>
+    <form>
+      <label for="nameInput">Name: <input type="text" name="name" id="nameInput"></label>
+      <label for="priceInput">Price: <input type="number" name="price" id="priceInput"></label>
+      <label for="yearInput">Year: <select name="year" id="yearInput"></select></label>
+      <button type="submit">Add Car</button>
+    </form>
+  </main>
 </body>
 </html>
