@@ -1,0 +1,110 @@
+:root {
+  --primary-color: #dad7cd;
+  --secondary-color: #a3b18a;
+  --tertiary-color: #588157;
+  --quaternary-color: #3a5a40;
+  --quinary-color: #344e41;
+  --foreground-color: #ffffff;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--quinary-color);
+}
+
+header {
+  background-color: var(--primary-color);
+  color: var(--quinary-color);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main {
+  color: var(--foreground-color);
+  padding: 1rem;
+}
+
+main table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+main table thead tr th {
+  background-color: var(--tertiary-color);
+  padding: 1rem;
+  text-align: left;
+}
+
+main table thead tr th:hover {
+  background-color: var(--quinary-color);
+}
+
+main table thead th:first-child {
+  border-top-left-radius: 15px;
+}
+
+main table thead th:last-child {
+  border-top-right-radius: 15px;
+}
+
+main table tbody tr:hover td {
+  background-color: var(--tertiary-color);
+}
+
+main table tbody tr td {
+  background-color: var(--quaternary-color);
+  padding: 1rem;
+}
+
+main table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 15px;
+}
+
+main table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 15px;
+}
+
+button {
+  padding: 4px;
+  color: white;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--quaternary-color);
+  border-radius: 3px;
+  min-width: 60px;
+}
+
+button:hover {
+  background-color: var(--tertiary-color);
+}
+
+main form {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main label {
+  width: 90%;
+}
+
+main form label input {
+  padding: 4px;
+  border: 1px solid var(--quaternary-color);
+  border-radius: 3px;
+  width: 70%;
+}
+
+main form label select {
+  padding: 4px;
+  border: 1px solid var(--quaternary-color);
+  border-radius: 3px;
+  width: 70%;
+}
