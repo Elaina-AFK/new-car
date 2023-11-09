@@ -1,8 +1,20 @@
+// states
+let tableNodeRef;
+let carData;
+let editStates = {};
+
 // common components
 
 function textNode(text) {
   const node = document.createTextNode(text);
   return node;
+}
+
+function input(name, defaultValue) {
+  const inputNode = document.createElement("input");
+  inputNode.name = name;
+  inputNode.defaultValue = defaultValue;
+  return inputNode;
 }
 
 // table components
@@ -37,13 +49,12 @@ function tbody(...trList) {
   return tbody;
 }
 
-function button(text) {
+function button(text, onClick = () => {}) {
   const button = document.createElement("button");
   button.innerHTML = text;
+  button.onclick = onClick;
   return button;
 }
-
-// state components
 
 // custom components
 
@@ -61,22 +72,66 @@ function carthead() {
 function cartbody(data) {
   return tbody(
     ...data.map((car) => {
-      const tdName = td(textNode(car.name));
-      const tdPrice = td(textNode(car.price));
-      const tdYear = td(textNode(car.year));
-      const tdAdded = td(textNode(car.added));
-      const tdModified = td(textNode(car.modified));
-      const tdAction = td(button("edit"), button("delete"));
-      const trNode = tr(tdName, tdPrice, tdYear, tdAdded, tdModified, tdAction);
-      trNode.id = car.id;
-      return trNode;
+      return editStates[car.id] ? editTr(car) : noEditTr(car);
     })
   );
 }
 
+function noEditTr(car) {
+  const tdName = td(textNode(car.name));
+  const tdPrice = td(textNode(car.price));
+  const tdYear = td(textNode(car.year));
+  const tdAdded = td(textNode(car.added));
+  const tdModified = td(textNode(car.modified));
+  const tdAction = td(
+    button("edit", () => {
+      editStates[car.id] = true;
+      updateTable();
+    }),
+    button("delete")
+  );
+  const trNode = tr(tdName, tdPrice, tdYear, tdAdded, tdModified, tdAction);
+  trNode.id = car.id;
+  return trNode;
+}
+
+function editTr(car) {
+  const tdName = td(input("name", car.name));
+  const tdPrice = td(input("price", car.price));
+  const tdYear = td(input("year", car.year));
+  const tdAdded = td(textNode(car.added));
+  const tdModified = td(textNode(car.modified));
+  const tdAction = td(
+    button("update"),
+    button("cancel", () => {
+      editStates[car.id] = false;
+      updateTable();
+    }),
+    button("delete")
+  );
+  const trNode = tr(tdName, tdPrice, tdYear, tdAdded, tdModified, tdAction);
+  trNode.id = car.id;
+  return trNode;
+}
+
+function initialEdit(data) {
+  data.forEach((car) => {
+    editStates[car.id] = false;
+  });
+}
+
 function carTable(tableNode, data) {
-  tableNode.appendChild(carthead());
-  tableNode.appendChild(cartbody(data));
+  tableNodeRef = tableNode;
+  carData = data;
+  initialEdit(data);
+
+  updateTable();
+}
+
+function updateTable() {
+  tableNodeRef.innerHTML = "";
+  tableNodeRef.appendChild(carthead());
+  tableNodeRef.appendChild(cartbody(carData));
 }
 
 export default carTable;
