@@ -69,7 +69,7 @@ app.put("/api/carData", async (req, res) => {
 app.delete("/api/carData", async (req, res) => {
   const id = req.body.id;
   const deleted = await db.Car.findOneAndDelete({ id });
-  deleted ? res.send({ isDeleted: true }) : res.send({ idDeleted: false });
+  deleted ? res.send({ pass: true }) : res.send({ pass: false });
 });
 
 app.listen(port, () => {

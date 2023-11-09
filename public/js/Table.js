@@ -1,6 +1,9 @@
+import htmlMethod from "./api.js";
+
 // states
 let tableNodeRef;
 let carData;
+let refetch = () => {};
 let editStates = {};
 
 // common components
@@ -77,6 +80,18 @@ function cartbody(data) {
   );
 }
 
+function deleteButton(id) {
+  return button("delete", () => {
+    htmlMethod("delete", "/api/carData", { id: id }).then((res) => {
+      if (res.pass) {
+        refetch();
+        return;
+      }
+      console.log("Delete unsuccessful");
+    });
+  });
+}
+
 function noEditTr(car) {
   const tdName = td(textNode(car.name));
   const tdPrice = td(textNode(car.price));
@@ -88,7 +103,7 @@ function noEditTr(car) {
       editStates[car.id] = true;
       updateTable();
     }),
-    button("delete")
+    deleteButton(car.id)
   );
   const trNode = tr(tdName, tdPrice, tdYear, tdAdded, tdModified, tdAction);
   trNode.id = car.id;
@@ -107,7 +122,7 @@ function editTr(car) {
       editStates[car.id] = false;
       updateTable();
     }),
-    button("delete")
+    deleteButton(car.id)
   );
   const trNode = tr(tdName, tdPrice, tdYear, tdAdded, tdModified, tdAction);
   trNode.id = car.id;
@@ -120,7 +135,8 @@ function initialEdit(data) {
   });
 }
 
-function carTable(tableNode, data) {
+function carTable(tableNode, data, refetchFunction) {
+  refetch = refetchFunction;
   tableNodeRef = tableNode;
   carData = data;
   initialEdit(data);

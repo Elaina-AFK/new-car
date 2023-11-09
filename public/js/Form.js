@@ -27,6 +27,7 @@ function initializeForm(refetchFunction) {
     htmlMethod("POST", "/api/carData", data).then((res) => {
       if (res.pass) {
         refetchFunction();
+        return;
       }
       console.log("This name already existed");
     });
