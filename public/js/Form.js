@@ -25,11 +25,11 @@ function initializeForm(refetchFunction) {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     htmlMethod("POST", "/api/carData", data).then((res) => {
-      if (res.pass) {
-        refetchFunction();
+      if (!res.pass) {
+        console.log("This name already existed");
         return;
       }
-      console.log("This name already existed");
+      refetchFunction();
     });
   };
 }
