@@ -1,4 +1,5 @@
 import htmlMethod from "./api.js";
+import initializeYearOption from "./yearOption.js";
 
 // states
 let tableNodeRef;
@@ -92,6 +93,12 @@ function deleteButton(id) {
   });
 }
 
+function yearSelect() {
+  const select = document.createElement("select");
+  select.name = "year";
+  return select;
+}
+
 function noEditTr(car) {
   const tdName = td(textNode(car.name));
   const tdPrice = td(textNode(car.price));
@@ -111,13 +118,21 @@ function noEditTr(car) {
 }
 
 function editTr(car) {
-  const tdName = td(input("name", car.name));
-  const tdPrice = td(input("price", car.price));
-  const tdYear = td(input("year", car.year));
+  const nameInput = input("name", car.name);
+  nameInput.required = true;
+  const priceInput = input("price", car.price);
+  priceInput.type = "number";
+  priceInput.required = true;
+  const yearInput = yearSelect();
+  initializeYearOption(yearInput, car.year);
+  yearInput.required = true;
+  const tdName = td(nameInput);
+  const tdPrice = td(priceInput);
+  const tdYear = td(yearInput);
   const tdAdded = td(textNode(car.added));
   const tdModified = td(textNode(car.modified));
   const tdAction = td(
-    button("update"),
+    button("update", () => {}),
     button("cancel", () => {
       editStates[car.id] = false;
       updateTable();
