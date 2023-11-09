@@ -1,3 +1,4 @@
+import initializeForm from "./Form.js";
 import carTable from "./Table.js";
 
 // setSearchBar
@@ -14,6 +15,7 @@ function main() {
   getCarData().then((res) => {
     carTable(carTableNode, res);
   });
+  initializeForm(main);
 }
 
 main();
