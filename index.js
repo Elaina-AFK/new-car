@@ -5,6 +5,16 @@ const session = require("express-session");
 
 const port = 3000;
 
+// middleware function
+
+const Authenticated = (req, res, next) => {
+  if (req.session && req.session.user) {
+    next();
+    return;
+  }
+  res.status(401).send({ isAuthenticated: false });
+};
+
 // api
 const app = express();
 
@@ -22,7 +32,7 @@ app.use(
 
 // Car Table
 
-app.get("/api/carData", async (req, res) => {
+app.get("/api/carData", Authenticated, async (req, res) => {
   const carData = await db.Car.find({}).select(
     "id name price year added modified -_id"
   );
