@@ -132,7 +132,18 @@ function editTr(car) {
   const tdAdded = td(textNode(car.added));
   const tdModified = td(textNode(car.modified));
   const tdAction = td(
-    button("update", () => {}),
+    button("update", () => {
+      htmlMethod("PUT", "/api/carData", {
+        id: car.id,
+        name: nameInput.value,
+        price: priceInput.value,
+        year: yearInput.value,
+      }).then((res) => {
+        if (res.pass === true) {
+          refetch();
+        }
+      });
+    }),
     button("cancel", () => {
       editStates[car.id] = false;
       updateTable();

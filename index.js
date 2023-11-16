@@ -59,7 +59,10 @@ app.post("/api/carData", async (req, res) => {
 app.put("/api/carData", async (req, res) => {
   const { id, ...updateData } = req.body;
   try {
-    await db.Car.findOneAndUpdate({ id: id }, { ...updateData });
+    await db.Car.findOneAndUpdate(
+      { id: id },
+      { ...updateData, modified: new Date() }
+    );
     res.send({ pass: true });
   } catch (e) {
     res.send({ pass: false });
