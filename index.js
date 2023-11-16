@@ -20,11 +20,7 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send(
-    `<a href='http://localhost:${port}/html/index.html'>New Car Project!</a>`
-  );
-});
+// Car Table
 
 app.get("/api/carData", async (req, res) => {
   const carData = await db.Car.find({}).select(
@@ -73,6 +69,24 @@ app.delete("/api/carData", async (req, res) => {
   const id = req.body.id;
   const deleted = await db.Car.findOneAndDelete({ id });
   deleted ? res.send({ pass: true }) : res.send({ pass: false });
+});
+
+// Login
+
+app.post("/api/login", async (req, res) => {
+  const userData = req.body;
+  const user = await db.Member.findOne({
+    username: userData.username,
+    password: userData.password,
+  });
+  if (user) {
+    req.session.user = {};
+    req.session.user.username = user.username;
+    req.session.user.role = user.role;
+    res.send(JSON.stringify({ pass: true }));
+    return;
+  }
+  return res.send(JSON.stringify({ pass: false }));
 });
 
 app.listen(port, () => {

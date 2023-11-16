@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-</head>
-<body>
-  <header>
-    <h1>Login</h1>
-  </header>
-  <main>
-    <form action="">
-      <label for="username">Username: <input type="text" name="username" id="username"></label>
-      <label for="password">Password: <input type="text" name="password" id="password"></label>
-      <button type="submit">Login</button>
-    </form>
-  </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="./js/login.js" defer></script>
+    <title>Login</title>
+  </head>
+  <body>
+    <header>
+      <h1>Login</h1>
+    </header>
+    <main>
+      <form id="loginForm">
+        <label for="username"
+          >Username: <input type="text" name="username" id="username" required
+        /></label>
+        <label for="password"
+          >Password: <input type="text" name="password" id="password" required
+        /></label>
+        <button type="submit">Login</button>
+      </form>
+      <h3 id="response"></h3>
+    </main>
+  </body>
 </html>
