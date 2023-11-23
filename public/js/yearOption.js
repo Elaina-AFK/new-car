@@ -9,6 +9,7 @@ function initializeYearOption(
   yearNode,
   defaultValue = new Date().getFullYear()
 ) {
+  yearNode.innerHTML = "";
   const thisYear = new Date().getFullYear();
   for (let i = 0; i < 50; i++) {
     const year = thisYear - i;
@@ -18,7 +19,6 @@ function initializeYearOption(
     }
     yearNode.appendChild(optionNode);
   }
-  return yearNode;
 }
 
 export default initializeYearOption;
