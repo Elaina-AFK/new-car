@@ -1,4 +1,4 @@
-import initializeForm from "./Form.js";
+import initializeForm from "./carForm.js";
 import carTable from "./carTable.js";
 
 async function getCarData() {

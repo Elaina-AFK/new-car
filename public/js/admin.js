@@ -1,4 +1,5 @@
 import memberTable from "./memberTable.js";
+import initializeForm from "./roleForm.js";
 
 async function getMemberData() {
   const res = await fetch("/api/memberData");
@@ -23,6 +24,7 @@ function main() {
     navigation.innerHTML =
       "<a href='/logout'>Log out</a><a href='/'>Car Table</a>";
   });
+  initializeForm(main);
 }
 
 main();

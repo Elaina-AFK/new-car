@@ -15,6 +15,14 @@ const Authenticated = (req, res, next) => {
   res.status(401).send({ isAuthenticated: false });
 };
 
+const Authorized = (req, res, next) => {
+  if (req.session.user.role === "admin") {
+    next();
+    return;
+  }
+  res.status(401).send({ isAuthorized: false });
+};
+
 // api
 const app = express();
 
@@ -39,7 +47,7 @@ app.get("/api/carData", Authenticated, async (req, res) => {
   res.send(JSON.stringify(carData));
 });
 
-app.post("/api/carData", async (req, res) => {
+app.post("/api/carData", Authenticated, async (req, res) => {
   const userData = req.body;
   const isAlreadyExist = await db.Car.exists({ name: req.body.name });
   if (isAlreadyExist) {
@@ -62,7 +70,7 @@ app.post("/api/carData", async (req, res) => {
   );
 });
 
-app.put("/api/carData", async (req, res) => {
+app.put("/api/carData", Authenticated, async (req, res) => {
   const { id, ...updateData } = req.body;
   try {
     await db.Car.findOneAndUpdate(
@@ -75,7 +83,7 @@ app.put("/api/carData", async (req, res) => {
   }
 });
 
-app.delete("/api/carData", async (req, res) => {
+app.delete("/api/carData", Authenticated, async (req, res) => {
   const id = req.body.id;
   const deleted = await db.Car.findOneAndDelete({ id });
   deleted ? res.send({ pass: true }) : res.send({ pass: false });
@@ -102,6 +110,38 @@ app.post("/api/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   req.session.destroy();
   return res.send("Logout successfully! <a href='/login.html'>Login</a>");
+});
+
+app.get("/api/memberData", Authenticated, Authorized, async (req, res) => {
+  const memberData = await db.Member.find({}).select(
+    "id username role added modified -_id"
+  );
+  res.send(JSON.stringify(memberData));
+});
+
+app.post("/api/memberData", Authenticated, Authorized, async (req, res) => {
+  const userData = req.body;
+  const isAlreadyExist = await db.Member.exists({
+    username: req.body.username,
+  });
+  if (isAlreadyExist) {
+    res.send(JSON.stringify({ pass: false }));
+    return;
+  }
+  const addedDate = new Date();
+  const id = Number(new Date()).toString(32);
+  const newCar = new db.Member({
+    ...userData,
+    added: addedDate,
+    modified: addedDate,
+    id: id,
+  });
+  await newCar.save();
+  res.send(
+    JSON.stringify({
+      pass: true,
+    })
+  );
 });
 
 app.listen(port, () => {

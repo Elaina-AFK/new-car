@@ -27,6 +27,8 @@ const MemberSchema = mongoose.Schema({
   lastName: String,
   id: String,
   role: String,
+  added: Date,
+  modified: Date,
 });
 const Member = mongoose.model("Member", MemberSchema, "members");
 
