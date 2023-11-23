@@ -99,6 +99,11 @@ app.post("/api/login", async (req, res) => {
   return res.send(JSON.stringify({ pass: false }));
 });
 
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  return res.send("Logout successfully! <a href='/login.html'>Login</a>");
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
