@@ -1,5 +1,5 @@
 import initializeForm from "./Form.js";
-import carTable from "./Table.js";
+import carTable from "./carTable.js";
 
 async function getCarData() {
   const res = await fetch("/api/carData");
@@ -9,6 +9,7 @@ async function getCarData() {
 function main() {
   const carTableNode = document.getElementById("carTable");
   const response = document.getElementById("response");
+  const navigation = document.getElementById("navigation");
   getCarData().then((res) => {
     if (res.isAuthenticated === false) {
       response.innerHTML =
@@ -16,6 +17,8 @@ function main() {
       return;
     }
     carTable(carTableNode, res, main);
+    navigation.innerHTML =
+      "<a href='/logout'>Log out</a><a href='/admin.html'>Admin panel</a>";
   });
   initializeForm(main);
 }
