@@ -12,7 +12,18 @@ const Authenticated = (req, res, next) => {
     next();
     return;
   }
-  res.status(401).send({ isAuthenticated: false });
+  res.status(401).send({ permission: false });
+};
+
+const isModerator = (req, res, next) => {
+  if (
+    req.session.user.role === "moderator" ||
+    req.session.user.role === "admin"
+  ) {
+    next();
+    return;
+  }
+  res.send({ permission: false });
 };
 
 const Authorized = (req, res, next) => {
@@ -20,7 +31,7 @@ const Authorized = (req, res, next) => {
     next();
     return;
   }
-  res.status(401).send({ isAuthorized: false });
+  res.status(401).send({ permission: false });
 };
 
 // api
@@ -47,7 +58,7 @@ app.get("/api/carData", Authenticated, async (req, res) => {
   res.send(JSON.stringify(carData));
 });
 
-app.post("/api/carData", Authenticated, async (req, res) => {
+app.post("/api/carData", Authenticated, isModerator, async (req, res) => {
   const userData = req.body;
   const isAlreadyExist = await db.Car.exists({ name: req.body.name });
   if (isAlreadyExist) {
@@ -70,7 +81,7 @@ app.post("/api/carData", Authenticated, async (req, res) => {
   );
 });
 
-app.put("/api/carData", Authenticated, async (req, res) => {
+app.put("/api/carData", Authenticated, isModerator, async (req, res) => {
   const { id, ...updateData } = req.body;
   const thisCar = await db.Car.findOne({ id: id });
   const isSameCar = thisCar.name === updateData.name;
@@ -86,7 +97,7 @@ app.put("/api/carData", Authenticated, async (req, res) => {
   }
 });
 
-app.delete("/api/carData", Authenticated, async (req, res) => {
+app.delete("/api/carData", Authenticated, isModerator, async (req, res) => {
   const id = req.body.id;
   const deleted = await db.Car.findOneAndDelete({ id });
   deleted ? res.send({ pass: true }) : res.send({ pass: false });

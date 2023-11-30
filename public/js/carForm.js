@@ -14,6 +14,10 @@ function initializeForm(refetchFunction) {
         console.log("This name already existed");
         return;
       }
+      if (!res.permission) {
+        console.log("You have no permission to do so!");
+        return;
+      }
       refetchFunction();
     });
   };

@@ -7,7 +7,7 @@ function option(value, selected = false) {
 }
 
 function initializeRoleOption(roleNode, defaultValue = "member") {
-  const roleList = ["member", "admin"];
+  const roleList = ["member", "moderator", "admin"];
   roleNode.innerHTML = "";
   roleList.forEach((role) => {
     roleNode.appendChild(

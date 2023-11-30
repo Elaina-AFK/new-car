@@ -36,6 +36,10 @@ function deleteButton(id) {
         refetch();
         return;
       }
+      if (!res.permission) {
+        console.log("You have no permission to do so!");
+        return;
+      }
       console.log("Delete unsuccessful");
     });
   });
@@ -89,6 +93,10 @@ function editTr(car) {
       }).then((res) => {
         if (res.pass === true) {
           refetch();
+          return;
+        }
+        if (!res.permission) {
+          console.log("You have no permission to do so!");
           return;
         }
         console.log("Already have this car name");

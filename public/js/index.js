@@ -11,7 +11,7 @@ function main() {
   const response = document.getElementById("response");
   const navigation = document.getElementById("navigation");
   getCarData().then((res) => {
-    if (res.isAuthenticated === false) {
+    if (res.permission === false) {
       response.innerHTML =
         "Please <a href='/login.html'>login</a> before continue...";
       return;
