@@ -14,7 +14,7 @@ function initializeForm(refetchFunction) {
         console.log("This name already existed");
         return;
       }
-      if (!res.permission) {
+      if (res.permission === false) {
         console.log("You have no permission to do so!");
         return;
       }

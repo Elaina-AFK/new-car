@@ -55,7 +55,9 @@ app.get("/api/carData", Authenticated, async (req, res) => {
   const carData = await db.Car.find({}).select(
     "id name price year added modified -_id"
   );
-  res.send(JSON.stringify(carData));
+  res.send(
+    JSON.stringify({ username: req.session.user.username, data: carData })
+  );
 });
 
 app.post("/api/carData", Authenticated, isModerator, async (req, res) => {
@@ -83,9 +85,10 @@ app.post("/api/carData", Authenticated, isModerator, async (req, res) => {
 
 app.put("/api/carData", Authenticated, isModerator, async (req, res) => {
   const { id, ...updateData } = req.body;
+  const isAlreadyExist = await db.Car.exists({ name: req.body.name });
   const thisCar = await db.Car.findOne({ id: id });
   const isSameCar = thisCar.name === updateData.name;
-  if (thisCar && !isSameCar) return res.send({ pass: false });
+  if (isAlreadyExist && !isSameCar) return res.send({ pass: false });
   try {
     await db.Car.findOneAndUpdate(
       { id: id },
@@ -130,7 +133,9 @@ app.get("/api/memberData", Authenticated, Authorized, async (req, res) => {
   const memberData = await db.Member.find({}).select(
     "id username role added modified -_id"
   );
-  res.send(JSON.stringify(memberData));
+  res.send(
+    JSON.stringify({ username: req.session.user.username, data: memberData })
+  );
 });
 
 app.post("/api/memberData", Authenticated, Authorized, async (req, res) => {
@@ -166,9 +171,12 @@ app.delete("/api/memberData", Authenticated, Authorized, async (req, res) => {
 
 app.put("/api/memberData", Authenticated, Authorized, async (req, res) => {
   const { id, ...updateData } = req.body;
+  const isAlreadyExist = await db.Member.exists({
+    username: req.body.username,
+  });
   const thisUser = await db.Member.findOne({ id: id });
   const isSameUser = thisUser.username === updateData.username;
-  if (thisUser && !isSameUser) return res.send({ pass: false });
+  if (isAlreadyExist && !isSameUser) return res.send({ pass: false });
   try {
     await db.Member.findOneAndUpdate(
       { id: id },

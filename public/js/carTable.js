@@ -36,7 +36,7 @@ function deleteButton(id) {
         refetch();
         return;
       }
-      if (!res.permission) {
+      if (res.permission === false) {
         console.log("You have no permission to do so!");
         return;
       }
@@ -95,7 +95,7 @@ function editTr(car) {
           refetch();
           return;
         }
-        if (!res.permission) {
+        if (res.permission === false) {
           console.log("You have no permission to do so!");
           return;
         }
