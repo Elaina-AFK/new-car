@@ -89,7 +89,9 @@ function editTr(car) {
       }).then((res) => {
         if (res.pass === true) {
           refetch();
+          return;
         }
+        console.log("Already have this car name");
       });
     }),
     button("cancel", () => {

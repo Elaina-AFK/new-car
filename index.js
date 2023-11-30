@@ -72,6 +72,9 @@ app.post("/api/carData", Authenticated, async (req, res) => {
 
 app.put("/api/carData", Authenticated, async (req, res) => {
   const { id, ...updateData } = req.body;
+  const thisCar = await db.Car.findOne({ id: id });
+  const isSameCar = thisCar.name === updateData.name;
+  if (thisCar && !isSameCar) return res.send({ pass: false });
   try {
     await db.Car.findOneAndUpdate(
       { id: id },
