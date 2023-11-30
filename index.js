@@ -150,6 +150,19 @@ app.delete("/api/memberData", Authenticated, Authorized, async (req, res) => {
   deleted ? res.send({ pass: true }) : res.send({ pass: false });
 });
 
+app.put("/api/memberData", Authenticated, Authorized, async (req, res) => {
+  const { id, ...updateData } = req.body;
+  try {
+    await db.Member.findOneAndUpdate(
+      { id: id },
+      { ...updateData, modified: new Date() }
+    );
+    res.send({ pass: true });
+  } catch (e) {
+    res.send({ pass: false });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

@@ -1,5 +1,6 @@
 import { textNode, input, td, th, tr, thead, tbody, button } from "./Table.js";
 import htmlMethod from "./api.js";
+import initializeRoleOption from "./roleOption.js";
 
 // states
 let tableNodeRef;
@@ -20,7 +21,11 @@ function memberthead() {
 }
 
 function membertbody(data) {
-  return tbody(...data.map((member) => noEditTr(member)));
+  return tbody(
+    ...data.map((member) =>
+      editStates[member.id] ? editTr(member) : noEditTr(member)
+    )
+  );
 }
 
 function deleteButton(id) {
@@ -48,6 +53,41 @@ function noEditTr(member) {
     deleteButton(member.id)
   );
   const trNode = tr(tdName, tdRole, tdAdded, tdModified, tdAction);
+  trNode.id = member.id;
+  return trNode;
+}
+
+function editTr(member) {
+  const usernameInput = input("name", member.username);
+  usernameInput.required = true;
+  const roleInput = document.createElement("select");
+  roleInput.name = "role";
+  initializeRoleOption(roleInput, member.role);
+  roleInput.required = true;
+  const tdUsername = td(usernameInput);
+  const tdRole = td(roleInput);
+  const tdAdded = td(textNode(member.added));
+  const tdModified = td(textNode(member.modified));
+  const tdAction = td(
+    button("update", () => {
+      htmlMethod("PUT", "/api/memberData", {
+        id: member.id,
+        username: usernameInput.value,
+        role: roleInput.value,
+      }).then((res) => {
+        if (res.pass === true) {
+          refetch();
+          return;
+        }
+      });
+    }),
+    button("cancel", () => {
+      editStates[member.id] = false;
+      updateTable();
+    }),
+    deleteButton(member.id)
+  );
+  const trNode = tr(tdUsername, tdRole, tdAdded, tdModified, tdAction);
   trNode.id = member.id;
   return trNode;
 }
