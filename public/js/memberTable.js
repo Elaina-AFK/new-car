@@ -79,6 +79,7 @@ function editTr(member) {
           refetch();
           return;
         }
+        console.log("username already used!");
       });
     }),
     button("cancel", () => {

@@ -152,6 +152,9 @@ app.delete("/api/memberData", Authenticated, Authorized, async (req, res) => {
 
 app.put("/api/memberData", Authenticated, Authorized, async (req, res) => {
   const { id, ...updateData } = req.body;
+  const thisUser = await db.Member.findOne({ id: id });
+  const isSameUser = thisUser.username === updateData.username;
+  if (thisUser && !isSameUser) return res.send({ pass: false });
   try {
     await db.Member.findOneAndUpdate(
       { id: id },
