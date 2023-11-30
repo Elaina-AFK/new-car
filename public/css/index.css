@@ -115,3 +115,7 @@ main form label select {
   justify-content: space-evenly;
   align-items: end;
 }
+
+h5 {
+  margin: 10px;
+}
