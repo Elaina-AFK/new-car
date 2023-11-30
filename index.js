@@ -144,6 +144,12 @@ app.post("/api/memberData", Authenticated, Authorized, async (req, res) => {
   );
 });
 
+app.delete("/api/memberData", Authenticated, Authorized, async (req, res) => {
+  const id = req.body.id;
+  const deleted = await db.Member.findOneAndDelete({ id });
+  deleted ? res.send({ pass: true }) : res.send({ pass: false });
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

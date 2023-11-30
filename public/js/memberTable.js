@@ -1,4 +1,5 @@
 import { textNode, input, td, th, tr, thead, tbody, button } from "./Table.js";
+import htmlMethod from "./api.js";
 
 // states
 let tableNodeRef;
@@ -23,7 +24,15 @@ function membertbody(data) {
 }
 
 function deleteButton(id) {
-  return button("delete", () => {});
+  return button("delete", () => {
+    htmlMethod("DELETE", "/api/memberData", { id: id }).then((res) => {
+      if (res.pass) {
+        refetch();
+        return;
+      }
+      console.log("Delete unsuccessful");
+    });
+  });
 }
 
 function noEditTr(member) {
