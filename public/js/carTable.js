@@ -3,6 +3,7 @@ import initializeYearOption from "./yearOption.js";
 import { textNode, input, td, th, tr, thead, tbody, button } from "./Table.js";
 
 // states
+const response = document.getElementById("response");
 let tableNodeRef;
 let carData;
 let refetch = () => {};
@@ -33,14 +34,15 @@ function deleteButton(id) {
   return button("delete", () => {
     htmlMethod("delete", "/api/carData", { id: id }).then((res) => {
       if (res.pass) {
+        response.innerHTML = "Deleted car successfully";
         refetch();
         return;
       }
       if (res.permission === false) {
-        console.log("You have no permission to do so!");
+        response.innerHTML = "You have no permission to do so!";
         return;
       }
-      console.log("Delete unsuccessful");
+      response.innerHTML = "Delete unsuccessful";
     });
   });
 }
@@ -92,14 +94,15 @@ function editTr(car) {
         year: yearInput.value,
       }).then((res) => {
         if (res.pass === true) {
+          response.innerHTML = "Car Updated!";
           refetch();
           return;
         }
         if (res.permission === false) {
-          console.log("You have no permission to do so!");
+          response.innerHTML = "You have no permission to do so!";
           return;
         }
-        console.log("Already have this car name");
+        response.innerHTML = "Already have this car name";
       });
     }),
     button("cancel", () => {

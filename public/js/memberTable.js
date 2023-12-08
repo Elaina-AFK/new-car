@@ -3,6 +3,7 @@ import htmlMethod from "./api.js";
 import initializeRoleOption from "./roleOption.js";
 
 // states
+const response = document.getElementById("response");
 let tableNodeRef;
 let memberData;
 let refetch = () => {};
@@ -33,9 +34,10 @@ function deleteButton(id) {
     htmlMethod("DELETE", "/api/memberData", { id: id }).then((res) => {
       if (res.pass) {
         refetch();
+        response.innerHTML = "Delete member successfully";
         return;
       }
-      console.log("Delete unsuccessful");
+      response.innerHTML = "Delete member unsuccessful";
     });
   });
 }
@@ -77,9 +79,10 @@ function editTr(member) {
       }).then((res) => {
         if (res.pass === true) {
           refetch();
+          response.innerHTML = "Update member successfully";
           return;
         }
-        console.log("username already used!");
+        response.innerHTML = "username already used!";
       });
     }),
     button("cancel", () => {

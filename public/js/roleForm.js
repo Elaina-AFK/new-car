@@ -4,6 +4,8 @@ import initializeRoleOption from "./roleOption.js";
 function initializeForm(refetchFunction) {
   const formNode = document.getElementById("formTable");
   const roleNode = document.getElementById("roleInput");
+  const response = document.getElementById("response");
+
   initializeRoleOption(roleNode);
   formNode.onsubmit = (e) => {
     e.preventDefault();
@@ -11,7 +13,7 @@ function initializeForm(refetchFunction) {
     const data = Object.fromEntries(formData.entries());
     htmlMethod("POST", "/api/memberData", data).then((res) => {
       if (!res.pass) {
-        console.log("This username is already existed");
+        response.innerHTML = "This username is already existed";
         return;
       }
       refetchFunction();

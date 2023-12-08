@@ -20,7 +20,7 @@ function main() {
     loginUser.innerHTML = `logged in as ${res.username}`;
     carTable(carTableNode, res.data, main);
     navigation.innerHTML =
-      "<a href='/logout'>Log out</a><a href='/admin.html'>Admin panel</a>";
+      "<a href='/logout'>Logout</a><a href='/admin.html'>Admin panel</a>";
   });
   initializeForm(main);
 }

@@ -126,7 +126,9 @@ app.post("/api/login", async (req, res) => {
 
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  return res.send("Logout successfully! <a href='/login.html'>Login</a>");
+  return res.send(
+    `<h1 style='display:grid;place-items:center'>Logout successfully! <a href='/login.html'>Login</a></h1>`
+  );
 });
 
 app.get("/api/memberData", Authenticated, Authorized, async (req, res) => {
